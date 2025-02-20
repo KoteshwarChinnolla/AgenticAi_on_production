@@ -5,24 +5,19 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v3
 
-    - name: Login dockerhub
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
-
     - name: Build the Docker image
-      run: docker build -t agentic_ai:$(date +%s) .
+      run: |
+        TIMESTAMP=$(date +%s)
+        docker build -t koti21/agentic_ai:$TIMESTAMP .
+        echo "IMAGE_TAG=$TIMESTAMP" >> $GITHUB_ENV  # Store tag for later use
 
-    - name: pushing docker image to dockerhub
-      run: docker push koti21/agentic_ai:$(date +%s)
-      
-        
-      
+    - name: Push Docker image to Docker Hub
+      run: docker push koti21/agentic_ai:${{ env.IMAGE_TAG }}
