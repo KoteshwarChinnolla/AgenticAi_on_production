@@ -1,0 +1,28 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build the Docker image
+      run: docker build -t agentic_ai:$(date +%s) .
+
+    - name: Login dockerhub
+      env:
+        DOCKER_USERNAME: $({secrets.DOCKER_HUB_USERNAME})
+        DOCKER_PASSWORD: $({secrets.DOCKER_HUB_PASSWORD})
+      run: docker login -u $DOCKER_USERNAME -P $DOCKER_PASSWORD
+
+    - name: pushing docker image to dockerhub
+      run: docker push koti21/agentic_ai:$(date +%s)
+      
+        
+      
