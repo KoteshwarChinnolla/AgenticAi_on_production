@@ -11,9 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: Build the Docker image
-      run: docker build -t agentic_ai:$(date +%s) .
+    - uses: actions/checkout@v3
 
     - name: Login dockerhub
       env:
@@ -21,6 +19,9 @@ jobs:
         DOCKER_PASSWORD: $({secrets.DOCKER_HUB_PASSWORD})
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
+    - name: Build the Docker image
+      run: docker build -t agentic_ai:$(date +%s) .
+      
     - name: pushing docker image to dockerhub
       run: docker push koti21/agentic_ai:$(date +%s)
       
