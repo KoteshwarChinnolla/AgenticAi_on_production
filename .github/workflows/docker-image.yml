@@ -21,7 +21,7 @@ jobs:
 
     - name: Build the Docker image
       run: docker build -t agentic_ai:$(date +%s) .
-      
+
     - name: pushing docker image to dockerhub
       run: docker push koti21/agentic_ai:$(date +%s)
       
