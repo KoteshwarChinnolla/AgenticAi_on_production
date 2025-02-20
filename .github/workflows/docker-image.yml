@@ -17,7 +17,7 @@ jobs:
       run: |
         TIMESTAMP=$(date +%s)
         docker build -t koti21/agentic_ai:$TIMESTAMP .
-        echo "IMAGE_TAG=$TIMESTAMP" >> $GITHUB_ENV  # Store tag for later use
+        echo "IMAGE_TAG=$TIMESTAMP" >> $GITHUB_ENV
 
     - name: Push Docker image to Docker Hub
       run: docker push koti21/agentic_ai:${{ env.IMAGE_TAG }}
