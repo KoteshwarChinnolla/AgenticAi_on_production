@@ -21,3 +21,18 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: docker push koti21/agentic_ai:${{ env.IMAGE_TAG }}
+
+  Deploy:
+    runs-on: self-hosted
+    steps:
+      - name: Pull the Docker Image
+        run: docker pull koti21/agentic_ai:${{ env.IMAGE_TAG }}
+        
+      - name: Delete Old Container
+        run: |
+          if [ "$(docker ps -q -f name=agentic_ai_container)" ]; then
+            sudo docker rm -f agentic_ai_container
+          fi
+          
+      - name: Run the Container
+        run: docker run -d -p 80:80 --name agentic_ai_container koti21/agentic_ai
