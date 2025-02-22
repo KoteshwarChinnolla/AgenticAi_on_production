@@ -14,7 +14,7 @@ jobs:
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
     - name: Build the Docker image
-      run: docker build -t koti21/agentic_ai:latest
+      run: docker build -t koti21/agentic_ai:latest .
 
     - name: Push Docker image to Docker Hub
       run: docker push koti21/agentic_ai:latest
