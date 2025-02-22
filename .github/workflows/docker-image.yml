@@ -14,20 +14,17 @@ jobs:
       run: echo "${{ secrets.DOCKER_HUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_HUB_USERNAME }}" --password-stdin
 
     - name: Build the Docker image
-      run: |
-        TIMESTAMP=$(date +%s)
-        docker build -t koti21/agentic_ai:$TIMESTAMP .
-        echo "IMAGE_TAG=$TIMESTAMP" >> $GITHUB_ENV
+      run: docker build -t koti21/agentic_ai:latest
 
     - name: Push Docker image to Docker Hub
-      run: docker push koti21/agentic_ai:${{ env.IMAGE_TAG }}
+      run: docker push koti21/agentic_ai:latest
 
   Deploy:
     runs-on: self-hosted
     needs: build
     steps:
       - name: Pull the Docker Image
-        run: docker pull koti21/agentic_ai:${{ env.IMAGE_TAG }}
+        run: docker pull koti21/agentic_ai:latest
         
       - name: Delete Old Container
         run: |
