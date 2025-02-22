@@ -33,4 +33,5 @@ jobs:
           fi
           
       - name: Run the Container
-        run: docker run -d -p 80:80 --name agentic_ai_container koti21/agentic_ai
+        run: docker run -d -p 5000:5000 --restart always --name agentic_ai_container koti21/agentic_ai:latest
+        
