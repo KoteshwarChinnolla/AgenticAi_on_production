@@ -5,7 +5,7 @@
   So I used modular coding techniques( Making every function as a supporter Python file and importing when required) to integrate all functions in the case of Agentic AI Tools, Agent's , Building graphs etc.. made individual Python files and imported it according to the requirements. It made a lot of tasks easy in terms of debugging and Clarity of code.
   
 
-> steps i followed
+> ## **Steps I followed**
  > 1. Building and Testing a Fast API application
 >  2. Writing Docker File
 >  3. Building Docker image and Docker Container Testing it on Local System
