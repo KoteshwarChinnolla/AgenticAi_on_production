@@ -24,6 +24,7 @@ jobs:
 
   Deploy:
     runs-on: self-hosted
+    needs: build
     steps:
       - name: Pull the Docker Image
         run: docker pull koti21/agentic_ai:${{ env.IMAGE_TAG }}
