@@ -22,20 +22,22 @@ class build_graph():
     def __init__(self):
 
         t=tools()
-        self.model=ChatGroq(model="DeepSeek-R1-Distill-Llama-70B")
+        self.model=ChatGroq(model="qwen-2.5-32b")
         self.add=t.add
         self.Subtract=t.Subtract
         self.multiply=t.multiply
         self.divide=t.divide
         self.memory=MemorySaver()
 
-        self.llm_with_tool=self.model.bind_tools([self.add,self.Subtract,self.multiply,self.divide],parallel_tool_calls=False)
+        self.tools_list=[self.add,self.Subtract,self.multiply,self.divide]
+
+        self.llm_with_tool=self.model.bind_tools(self.tools_list)
         self.sys_msg = SystemMessage(content="You are a helpful assistant tasked with performing arithmetic on a set of inputs.")
 
         self.builder=StateGraph(MessageState)
 
         self.builder.add_node("tool_calling_llm",self.tool_calling_llm)
-        self.builder.add_node("tools", ToolNode([self.add,self.Subtract,self.multiply,self.divide]))
+        self.builder.add_node("tools", ToolNode(self.tools_list))
 
         self.builder.add_edge(START,"tool_calling_llm")
         self.builder.add_conditional_edges("tool_calling_llm",tools_condition,)
@@ -54,11 +56,45 @@ class build_graph():
     def response(self,message,name,thread_id):
         config={"configurable":{"thread_id":thread_id}}
         messages=[HumanMessage(content=message,name=name)]
-        response=self.graph.invoke({"messages":messages})
-        AI_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.ai.AIMessage'>"]
-        Tool_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.tool.ToolMessage'>"]
+        # response=self.graph.invoke({"messages":messages})
+        response=self.graph.stream({"messages":messages},stream_mode="values")
+
+        last_chat=[]
+        
+        for event in response:
+            last_chat.append(event["messages"][-1])
+        AI_message=[i for i in last_chat if str(type(i))=="<class 'langchain_core.messages.ai.AIMessage'>"]
+        Tool_message=[i for i in last_chat if str(type(i))=="<class 'langchain_core.messages.tool.ToolMessage'>"]
         tool_content=""
         for i in Tool_message:
-            tool_content=i.content+" \n"
+            tool_content=i.content+"\n"
+        process=""
+
+        if len(AI_message)>1:
+            tools_called=AI_message[-2].additional_kwargs["tool_calls"]
+            for i in tools_called:
+                process+="\n\n"+str(i["function"]["arguments"] + " \n\n " + str(i["function"]["name"]))
+
         AI_content=AI_message[-1].content
-        return tool_content+"\n"+AI_content
+
+        final_content=process+"\n\n"+tool_content+"\n\n"+AI_content
+        
+        return final_content
+
+
+        # for event in self.graph.stream({"messages":messages},stream_mode="values"):
+        #     # print(event)
+        #     print(event['messages'])
+
+
+
+
+
+        # AI_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.ai.AIMessage'>"]
+        # Tool_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.tool.ToolMessage'>"]
+        # tool_content=""
+        # for i in Tool_message:
+        #     tool_content=i.content+" \n"
+        # AI_content=AI_message[-1].content
+        # return tool_content+"\n"+AI_content
+        # return "done"

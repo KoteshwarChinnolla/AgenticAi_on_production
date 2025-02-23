@@ -26,7 +26,7 @@ class tools:
         """
         return a*b
 
-    def divide(self,a :int, b:int)->int:
+    def divide(self,a :int, b:int)->float:
 
         """ Divide a by b
 
