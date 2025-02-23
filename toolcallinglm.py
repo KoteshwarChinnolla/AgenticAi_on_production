@@ -24,12 +24,12 @@ class build_graph():
         t=tools()
         self.model=ChatGroq(model="qwen-2.5-32b")
         self.add=t.add
-        self.Subtract=t.Subtract
+        self.subtract=t.subtract
         self.multiply=t.multiply
         self.divide=t.divide
         self.memory=MemorySaver()
 
-        self.tools_list=[self.add,self.Subtract,self.multiply,self.divide]
+        self.tools_list=[self.add,self.subtract,self.multiply,self.divide]
 
         self.llm_with_tool=self.model.bind_tools(self.tools_list)
         self.sys_msg = SystemMessage(content="You are a helpful assistant tasked with performing arithmetic on a set of inputs.")
@@ -60,7 +60,7 @@ class build_graph():
         response=self.graph.stream({"messages":messages},stream_mode="values")
 
         last_chat=[]
-        
+
         for event in response:
             last_chat.append(event["messages"][-1])
         AI_message=[i for i in last_chat if str(type(i))=="<class 'langchain_core.messages.ai.AIMessage'>"]

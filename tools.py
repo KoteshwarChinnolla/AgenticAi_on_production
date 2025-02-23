@@ -8,8 +8,8 @@ class tools:
         """
         return a+b
 
-    def Subtract(self,a:int,b:int)->int:
-        """ Subtract b from a
+    def subtract(self,a:int,b:int)->int:
+        """ subtract b from a
 
         Args :
         a: first int
