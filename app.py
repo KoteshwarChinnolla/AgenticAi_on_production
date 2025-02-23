@@ -42,7 +42,7 @@ async def chat(chat_request: ChatRequest):
         response = graph.response(user_message, "user", str(i))
         return HTMLResponse(content=md.convert(response))
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
+        raise HTMLResponse(content=md.convert(str(e)))
 
 
 
