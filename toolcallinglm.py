@@ -44,7 +44,7 @@ class build_graph():
         self.builder.add_edge("tools","tool_calling_llm")
 
         # self.graph=self.builder.compile(checkpointer=self.memory)
-        self.graph=self.builder.compile()
+        self.graph=self.builder.compile(checkpointer=self.memory)
 
     def graph_workflow():
         return self.graph
@@ -57,7 +57,7 @@ class build_graph():
         config={"configurable":{"thread_id":thread_id}}
         messages=[HumanMessage(content=message,name=name)]
         # response=self.graph.invoke({"messages":messages})
-        response=self.graph.stream({"messages":messages},stream_mode="values")
+        response=self.graph.stream({"messages":messages},config=config,stream_mode="values")
 
         last_chat=[]
 
