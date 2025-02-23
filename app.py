@@ -23,7 +23,6 @@ i=0
 class ChatRequest(BaseModel):
     message: str
     name: str
-    thread_id: str
 
 
 @app.get("/")

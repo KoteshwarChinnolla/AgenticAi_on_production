@@ -41,7 +41,8 @@ class build_graph():
         self.builder.add_conditional_edges("tool_calling_llm",tools_condition,)
         self.builder.add_edge("tools","tool_calling_llm")
 
-        self.graph=self.builder.compile(checkpointer=self.memory)
+        # self.graph=self.builder.compile(checkpointer=self.memory)
+        self.graph=self.builder.compile()
 
     def graph_workflow():
         return self.graph
@@ -53,7 +54,7 @@ class build_graph():
     def response(self,message,name,thread_id):
         config={"configurable":{"thread_id":thread_id}}
         messages=[HumanMessage(content=message,name=name)]
-        response=self.graph.invoke({"messages":messages},config=config)
+        response=self.graph.invoke({"messages":messages})
         AI_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.ai.AIMessage'>"]
         Tool_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.tool.ToolMessage'>"]
         tool_content=""
