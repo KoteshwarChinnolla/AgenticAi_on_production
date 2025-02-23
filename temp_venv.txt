@@ -7,3 +7,4 @@ langchain-groq
 langgraph
 fastapi
 uvicorn
+markdown2

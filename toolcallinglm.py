@@ -54,7 +54,10 @@ class build_graph():
         config={"configurable":{"thread_id":thread_id}}
         messages=[HumanMessage(content=message,name=name)]
         response=self.graph.invoke({"messages":messages},config=config)
-        s=""
-        for i in response["messages"]:
-            s+=i.pretty_repr()+"\n"
-        return s
+        AI_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.ai.AIMessage'>"]
+        Tool_message=[i for i in response["messages"] if str(type(i))=="<class 'langchain_core.messages.tool.ToolMessage'>"]
+        tool_content=""
+        for i in Tool_message:
+            tool_content=i.content+" \n"
+        AI_content=AI_message[-1].content
+        return tool_content+"\n"+AI_content

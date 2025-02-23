@@ -22,5 +22,6 @@
 >  8. Setting up Linux VM for docker
 >  9. Understanding GIT and VM connection -- **Self Hosted Runners**
 >  10. Running Jobs 
+>  
  
  

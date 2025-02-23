@@ -1,11 +1,13 @@
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import uvicorn
 from toolcallinglm import build_graph
 from pprint import pprint
+import markdown2
 graph=build_graph()
-
+md = markdown2.Markdown()
 app = FastAPI()
 
 
@@ -39,7 +41,7 @@ async def chat(chat_request: ChatRequest):
     try:
         # Generate a response from the chatbot model
         response = graph.response(user_message, "user", str(i))
-        return {"reply": response}
+        return HTMLResponse(content=md.convert(response))
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"An error occurred: {str(e)}")
 
