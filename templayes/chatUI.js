@@ -1,5 +1,9 @@
 let selectedChatbot = "AI Assistant";
 
+function generateUniqueId() {
+  return 'id-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+}
+let Thread_id=generateUniqueId();
 function selectChatbot(name) {
     selectedChatbot = name;
     alert("Selected: " + name);
@@ -36,7 +40,7 @@ function sendMessage() {
     if (!message) return;
 
     const chatWindow = document.getElementById("chat-window");
-    chatWindow.innerHTML += `<div style="text-align: right; margin: 10px;"><b>You:</b> ${message}</div>`;
+    chatWindow.innerHTML += `<div  style="text-align: right; margin: 10px;"><b>You:</b> ${message}</div>`;
     fetch("https://7us7agqoy0.execute-api.us-east-1.amazonaws.com/chat", {
         method: "POST",
         headers: {
@@ -45,14 +49,15 @@ function sendMessage() {
         },
         body: JSON.stringify({
           message: message,
-          name:uname
+          name:uname,
+          Thread_id:Thread_id
         }),
       })
       .then((response) => response.text())
       .then((data) => {
         console.log("Success:", data);
         setTimeout(() => {
-            const botResponse = `<div style="text-align: left; margin: 10px;"><b>${selectedChatbot}:</b> <div style="background:#ddd; padding:20px; border-radius:10px;">${data}</div></div>`;
+            const botResponse = `<div style="text-align: left; margin: 10px;"><b>${selectedChatbot}:</b> <div style="background:radial-gradient(circle, #3c3b52 30%, #252233 100%); color: rgb(243, 243, 243); padding:25px; border-radius:10px;">${data}</div></div>`;
             chatWindow.innerHTML += botResponse;
             chatWindow.scrollTop = chatWindow.scrollHeight;
         }, 1000);

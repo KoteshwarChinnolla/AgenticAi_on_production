@@ -23,6 +23,7 @@ i=0
 class ChatRequest(BaseModel):
     message: str
     name: str
+    thread_id: str
 
 
 @app.get("/")
@@ -39,7 +40,7 @@ async def chat(chat_request: ChatRequest):
 
     try:
         # Generate a response from the chatbot model
-        response = graph.response(user_message, "user", str(i))
+        response = graph.response(user_message, chat_request.name, chat_request.thread_id)
         content=md.convert(response)
         content=content.replace("\n\n","<br>")
         content=content.replace("\n","<br>")
