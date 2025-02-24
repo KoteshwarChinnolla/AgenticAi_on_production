@@ -49,8 +49,8 @@ function sendMessage() {
         },
         body: JSON.stringify({
           message: message,
-          name:uname,
-          Thread_id:Thread_id
+          name:String(uname),
+          thread_id:String(Thread_id),
         }),
       })
       .then((response) => response.text())

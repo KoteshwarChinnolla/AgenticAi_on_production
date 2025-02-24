@@ -27,9 +27,10 @@ class build_graph():
         self.subtract=t.subtract
         self.multiply=t.multiply
         self.divide=t.divide
+        self.power=t.power
         self.memory=MemorySaver()
 
-        self.tools_list=[self.add,self.subtract,self.multiply,self.divide]
+        self.tools_list=[self.add,self.subtract,self.multiply,self.divide,self.power]
 
         self.llm_with_tool=self.model.bind_tools(self.tools_list)
         self.sys_msg = SystemMessage(content="You are a helpful assistant tasked with performing arithmetic on a set of inputs.")

@@ -36,4 +36,11 @@ class tools:
         """
         return a/b
 
-    
+    def power(self,a:float,b:float)->float:
+        """ Raise a to the power of b
+
+        Args :
+        a: first float
+        b: second float
+        """
+        return a**b
