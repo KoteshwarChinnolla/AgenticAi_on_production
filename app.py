@@ -41,6 +41,7 @@ async def chat(chat_request: ChatRequest):
         # Generate a response from the chatbot model
         response = graph.response(user_message, "user", str(i))
         content=md.convert(response)
+        content=content.replace("\n\n","<br>")
         content=content.replace("\n","<br>")
         return HTMLResponse(content=content)
     except Exception as e:
