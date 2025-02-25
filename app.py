@@ -45,7 +45,7 @@ async def calculator(chat_request: ChatRequest):
         content=md.convert(response)
         content=content.replace("\n\n","<br>")
         content=content.replace("\n","<br>")
-        return HTMLResponse(content=content)
+        return HTMLResponse(content=content[:-4])
     except Exception as e:
         raise HTMLResponse(content=md.convert(str(e)))
 
