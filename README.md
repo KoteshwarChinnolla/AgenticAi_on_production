@@ -31,17 +31,45 @@ I implimented every functionality in a supperate file then imported it as librer
 
 First thing is that while we are giving a input to any function it checks whether it is in the required format or data type. outputs are inaccurate if not. So the input needs to be in a format that is accepted by the functions we are using. for validation of inputs we use  **PYDANTIC**
 
-### **PYDANTIC** :
+#### **PYDANTIC** :
 Pydantic is a data validation and settings management library that leverages Python's type annotations to provide powerful and easy-to-use tools for ensuring our data is in the correct format.
+[pydantic](https://docs.pydantic.dev/2.10/)
 
+```python
+from pydantic import BaseModel
+class ChatRequest(BaseModel):
+    message: str
+    name: str
+    thread_id: str
+```
 
-In some cases, there might be multiple requests at the same time. For handling this case, FastAPI has a unique functionality of processing it asynchronously. It is most important when we are dealing with a production-level application. Also, multiple connections need to be handled independently; there must not be any concurrency in between requests. This is where **UVICORN** comes into the picture. We can handle running our server with the general method, but running the  application with **UVICORN** brings a lot of advantages.
+In some cases, there might be multiple requests at the same time. For handling this case, FastAPI has a unique functionality of processing it asynchronously. It is most important when we are dealing with a production-level application.
+**async Def for asynchronous request processing**
+```python
+from fastapi import FastAPI
+app = FastAPI()
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+```
+
+Also, multiple connections need to be handled independently; there must not be any concurrency in between requests. This is where **UVICORN** comes into the picture. We can handle running our server with the general method, but running the  application with **UVICORN** brings a lot of advantages.
 
 **UVICORN**:  Uvicorn is a lightning-fast ASGI (Asynchronous Server Gateway Interface) server implementation for Python. It is designed to handle multiple connections and events concurrently, making it an excellent choice for serving FastAPI applications. 
 
+**Normal run**
+```
+fastapi run main.py
+```
+**Unicorn run**
+```
+uvicorn main:app --host 0.0.0.0 --port 80
+```
+
 There are other alternatives [more information click here](https://fastapi.tiangolo.com/deployment/manually/#install-the-server-program)
 
-[UVICORN] (https://www.uvicorn.org/)
+[UVICORN](https://www.uvicorn.org/)
+(FASTAPI Doccumentation for better detail)[https://fastapi.tiangolo.com/tutorial/first-steps/)
 
 
 
