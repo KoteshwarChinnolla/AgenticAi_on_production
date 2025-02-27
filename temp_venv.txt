@@ -8,3 +8,4 @@ langgraph
 fastapi
 uvicorn
 markdown2
+langgraph-cli[inmem]
