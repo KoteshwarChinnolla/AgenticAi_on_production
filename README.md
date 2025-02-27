@@ -1,4 +1,4 @@
-﻿# AgenticAi_on_production
+﻿# Implementation Detail's 
 
  I feel like it would be interesting if I just Deploy what I learnt through the process of learning Agentic AI. Here is a complete detailed approach if someone wants to deploy Agentic ai applications on to cloud in my case (AWS). I have documented it so that it will be lot helpful for me in the future as well as for someone who wants to research on this.
 
