@@ -63,13 +63,56 @@ fastapi run main.py
 ```
 **Unicorn run**
 ```
-uvicorn main:app --host 0.0.0.0 --port 80
+uvicorn main:app --host 127.0.0.1 --port 5000
 ```
+
+``python
+if __name__ == "__main__":
+    uvicorn.run(app, host="127.0.0.1", port=5000) 
+``
+Understand we are running it on ``127.0.0.1`` wich means local host port 5000
 
 There are other alternatives [more information click here](https://fastapi.tiangolo.com/deployment/manually/#install-the-server-program)
 
 [UVICORN](https://www.uvicorn.org/)
-(FASTAPI Doccumentation for better detail)[https://fastapi.tiangolo.com/tutorial/first-steps/)
+
+[FASTAPI Doccumentation for better detail](https://fastapi.tiangolo.com/tutorial/first-steps/)
+
+[My fast API application](https://github.com/KoteshwarChinnolla/AgenticAi_on_production/blob/main/app.py)
+
+## **Writing Docker File**
+
+Till now we just tested our code on local host port 5000 which is just tested on our system . what if we want to make the application public . what if our friend has to access it with out installing any dependencis. yes it is possible , just use docker.
+
+**Docker** : Docker is an open platform for developing, shipping, and running applications. Docker enables you to separate your applications from your infrastructure so you can deliver software quickly.
+
+**How can we Build ?** you can imagine creating file or installing dependencies by using commands (of ciratin format) on a fresh computer. where there is no files no python nothing. what steps do you follow to run your code overthere?
+
+**Steps involved**
+> 1. you install python
+> 2. create a working directory where your ll code will be present
+> 3. copy all your code into that directory.
+> 4. Install what all dependencys you needed to run your code
+> 5. then Run your script
+
+This is what we are following to create a docker Image
+**Docker Image** ? 
+
+everything we specified will going to store in this image. imagine it is like a mobile application on playstore wich contains all the dependencys to run that app on your mobile. SO Docker image contains every thing to run a Docker Container.
+
+**Docker Container**? 
+
+It is a runtime instance of a Docker image, providing an isolated environment for running applications. running the application mean making the requests to the fast api application. Now imagine u done installing the platstore application(Creating Docker image in our case) we can only use there functionalities wen we open and make requests( Containers provide you with this environments where you can make your to the internal python codes)
+
+I followed the doccumentation for writing the dockerfile
+
+(Basic format) https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/)
+
+
+**Steps involved**
+> Cresting File named Dockerfile
+
+
 
 
 
