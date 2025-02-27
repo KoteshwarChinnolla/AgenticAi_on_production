@@ -161,17 +161,5 @@ docker container run \
          
 Test the working-- by running your container. Now, navigate to Docker Desktop. You will be able to see a container is in running state. Click on `5000:5000`. if it is in underlined, then the container is running. If you click on that, we navigate to a local host ```http://localhost:5000``` Just add `/docs` at the end to see the swagger UI. we are now at ```http://localhost:5000/docs``` to test our API's.
 
+We did all of this ourselves next, let's see how can we automate this process.
 
-
-
-
-
-
-
-
-
-
-
-
- 
- 
