@@ -149,15 +149,19 @@ For building image
 docker build -t <__name__> .
 ```
 <__name__> Fill in the blank with the name you want.
-It will take some minutes to install all the dependencies. The image we built will contain all files and dependencies, and we also mentioned what file to run. Who will run these files for this? We need containers to help us to continuously run the docker image. to run the containers.
+It will take some minutes to install all the dependencies. The image we built will contain all files and dependencies, and we also mentioned what file to run. Who will run these files for this? We need containers to help us to run the docker image continuously. to run the containers.
 
 ```python
 docker container run \
 --name "test_container_1" -d -p 5000:5000 \
 -e GROQ_API_KEY="<API_key>" -e LANG_CHAIN_API_KEY="<API_KEY>" agenticai_model
 ```
+`-e` represents setting ENVIRONMENT variables. I pass it while the container is running as we have Secrate keys.
 
-Test the working-- by running your container. Now, navigate to Docker Desktop. You will be able to see a container is in running state. Click on `5000:5000`. if it is in underlined, then the container is running. If you click on that, we navigate to a local host ```http://localhost:5000``` Just add `/docs` at the end to see the swagger UI. we are now at ```http://localhost:5000/docs``` to test our API's
+         
+Test the working-- by running your container. Now, navigate to Docker Desktop. You will be able to see a container is in running state. Click on `5000:5000`. if it is in underlined, then the container is running. If you click on that, we navigate to a local host ```http://localhost:5000``` Just add `/docs` at the end to see the swagger UI. we are now at ```http://localhost:5000/docs``` to test our API's.
+
+
 
 
 
