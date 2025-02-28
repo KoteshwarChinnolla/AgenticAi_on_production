@@ -6,7 +6,7 @@
   
 
 > ## **Steps I followed**
- > 1. Building and Testing a Fast API Application
+> 1. Building and Testing a Fast API Application
 >  2. Writing the Docker File
 >  3. Building a Docker image and Docker Container Testing it on Local System
 >  4. CI pipeLine code
@@ -27,7 +27,7 @@
 
 We are using FastAPI to create our API. I have included various functionalities into one API, such as a companion bot, a Calculator bot, etc The fast api made it easy to integrate all together and create different operations with different routes. 
 
-I implimented every functionality in a supperate file then imported it as libreryes so that there will be a ease of debugging and clear understading of code. i found out this this technique is known as modular coding. This method made my task esy to just import every functionality into one app.py(FastAPI file) then exicute the functions.
+I implemented every functionality in a suppurate file then imported it as libraries so that there will be a ease of debugging and clear understating of code. i found out this this technique is known as modular coding. This method made my task easy to just import every functionality into one app.py(FastAPI file) then execute the functions.
 
 First thing is that while we are giving a input to any function it checks whether it is in the required format or data type. outputs are inaccurate if not. So the input needs to be in a format that is accepted by the functions we are using. for validation of inputs we use  **PYDANTIC**
 
@@ -159,7 +159,12 @@ docker container run \
 `-e` represents setting ENVIRONMENT variables. I pass it while the container is running as we have Secrate keys.
 
          
-Test the working-- by running your container. Now, navigate to Docker Desktop. You will be able to see a container is in running state. Click on `5000:5000`. if it is in underlined, then the container is running. If you click on that, we navigate to a local host ```http://localhost:5000``` Just add `/docs` at the end to see the swagger UI. we are now at ```http://localhost:5000/docs``` to test our API's.
+**Test the working**-- by running your container.
 
-We did all of this ourselves next, let's see how can we automate this process.
+ Now, navigate to Docker Desktop. You will be able to see a container is in running state. Click on `5000:5000`. if it is in underlined, then the container is running. If you click on that, we navigate to a local host ```http://localhost:5000``` Just add `/docs` at the end to see the swagger UI. we are now at ```http://localhost:5000/docs``` to test our API's.
+
+We did all of this by ourselves next, let's see how can we automate this process.
+
+## **CI/CD Pipe Line**
+
 

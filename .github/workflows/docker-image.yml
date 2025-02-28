@@ -3,6 +3,10 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - '**'
+      - '!test.ipynb'
+      - '!README.md'
 
 jobs:
   build:
