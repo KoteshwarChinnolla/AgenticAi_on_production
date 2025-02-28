@@ -1,5 +1,7 @@
 import sys
-sys.path.append('../')
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -7,10 +9,10 @@ from fastapi.responses import HTMLResponse
 from pydantic import BaseModel
 import uvicorn
 # C:\Users\Chinnnolla Koteshwar\Downloads\agentic_ai_apps\toolcallinglm.py
-from toolcallinglm import build_graph
+from calculater.toolcallinglm import build_graph
 from pprint import pprint
 import markdown2
-from a_info_model import gen_info
+from my_info.a_info_model import gen_info
 
 calculator_model=build_graph()
 md = markdown2.Markdown()
@@ -25,6 +27,9 @@ app.add_middleware(
     allow_headers=["*"],  # Allow all headers
 )
 i=0
+
+
+
 
 class ChatRequest(BaseModel):
     message: str

@@ -15,13 +15,12 @@ COPY temp_venv.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 
-COPY app.py app.py
-COPY toolcallinglm.py toolcallinglm.py
-COPY tools.py tools.py
+COPY app app
+COPY calculater calculater
+COPY my_info my_info
 COPY model_calling.py model_calling.py
-COPY a_info_model.py a_info_model.py
 
 EXPOSE 5000
 
 
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["uvicorn", "app.app:app", "--host", "0.0.0.0", "--port", "5000"]
