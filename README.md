@@ -165,6 +165,4 @@ docker container run \
 
 We did all of this by ourselves next, let's see how can we automate this process.
 
-## **CI/CD Pipe Line**
-
-
+## **CI/CD Pipe Line✨**
