@@ -1,42 +1,40 @@
 ## Final Code 
 
-Sure, here's the organized code with docstrings and comments for clarity:
-
 ```python
-# Import Section
-# This section imports the `math` module, which provides access to the mathematical functions defined by the C standard.
-import math
+from typing import List
 
-# Function Definition
-def is_prime(n):
+def binary_search(sorted_array: List[int], target: int) -> int:
     """
-    Determines if the given number n is a prime number.
+    Perform a binary search on a sorted array to find the index of a target value.
     
     Parameters:
-    n (int): The number to check for primality.
-    
+        sorted_array (List[int]): A list of integers sorted in non-decreasing order.
+        target (int): The value to search for in the sorted_array.
+        
     Returns:
-    str: 'Prime' if the number is prime, 'Not Prime' otherwise.
+        int: The index of the target in the array if found, otherwise -1.
     """
-    if n < 2:
-        return 'Not Prime'
-    if n == 2:
-        return 'Prime'
-    if n % 2 == 0:
-        return 'Not Prime'
-    for i in range(3, int(math.sqrt(n)) + 1, 2):
-        if n % i == 0:
-            return 'Not Prime'
-    return 'Prime'
-
-# Input and Output
-# This section takes an input number from the user and prints whether the number is prime or not using the defined function.
-number = int(input('Enter a number: '))
-print(is_prime(number))
+    
+    # Initialize the left and right pointers to cover the entire array
+    left, right = 0, len(sorted_array) - 1
+    
+    # Continue the loop as long as the left pointer is less than or equal to the right pointer
+    while left <= right:
+        # Calculate the middle index
+        mid = (left + right) // 2
+        
+        # If the target is found at the middle index, return the index
+        if sorted_array[mid] == target:
+            return mid
+        # If the target is larger than the value at the middle index, adjust the left pointer
+        elif sorted_array[mid] < target:
+            left = mid + 1
+        # If the target is smaller, adjust the right pointer
+        else:
+            right = mid - 1
+    
+    # If the loop ends and the target was not found, return -1
+    return -1
 ```
 
-This reorganization includes:
-
-- A clear separation of the import section, the function definition, and the input/output section.
-- Docstrings added to the `is_prime` function to explain its purpose, parameters, and return values.
-- Comments added to describe the purpose of each section of the code.
+This function, `binary_search`, efficiently locates the index of a target value within a sorted array. It accepts two parameters: `sorted_array`, which is the array to be searched, and `target`, which is the value to be located within the array. The function returns the index of the target if it is present in the array, or -1 if the target is not found. The binary search algorithm works by repeatedly dividing the search interval in half, comparing the target with the middle element of the interval, and narrowing down the search space based on the comparison until the target is found or the search space is exhausted. This method is highly efficient, with a time complexity of O(log n), making it significantly faster than linear search for large datasets.

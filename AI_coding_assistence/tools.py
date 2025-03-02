@@ -229,3 +229,16 @@ class tools:
             return "stop"
         else:
             return "continue"
+
+
+    def first_output(self,State:State):
+
+        return State["problem_statement"]+State["test_cases"]
+
+    def second_output(self,State:State):
+
+        return State["code"]
+
+    def third_output(self,State:State):
+
+        return State["final_report"]+State["output"]

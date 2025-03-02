@@ -95,12 +95,11 @@ async def coding_assistance(chat_request: CodingAssistance):
     if "initial_input" not in request:
         raise HTTPException(status_code=400, detail="Message cannot be empty.")
     try:
-        coding_assistance_model.response(request)
-
-        with open("test_output.md", "r", encoding="utf-8") as file:
-            content = file.read()
-
-        return HTMLResponse(content=md.convert(content))
+        content = coding_assistance_model.response(request)
+        content=md.convert(content)
+        content=content.replace("\n\n","<br>")
+        content=content.replace("\n","<br>")
+        return HTMLResponse(content=content)
 
     except Exception as e:
         raise HTMLResponse(content=md.convert(str(e)))

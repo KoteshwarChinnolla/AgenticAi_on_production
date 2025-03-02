@@ -56,13 +56,13 @@ function sendMessage(event) {
       if (["yes", "y", "ok"].includes(message.toLowerCase())) {
           update = "ok";
           fetchResponse(initial_input, update, "None", chatWindow);
-          askForDocumentation(chatWindow);
       } else {
           update = message;
           fetchResponse(initial_input, update, "None", chatWindow);
           askForCode(chatWindow);
       }
-  } else if (documentation === "None") {
+  } 
+  else if (documentation === "None") {
       if (["yes", "y", "ok"].includes(message.toLowerCase())) {
           documentation = "ok";
           fetchResponse(initial_input, update, documentation, chatWindow);
@@ -76,7 +76,7 @@ function sendMessage(event) {
 
 
 function fetchResponse(initial_input, update, documentation, chatWindow) {
-    fetch("http://127.0.0.1:5000/coding_assistance", {
+    fetch("https://7us7agqoy0.execute-api.us-east-1.amazonaws.com/coding_assistance", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

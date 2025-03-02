@@ -10,6 +10,7 @@ from langchain_core.messages import HumanMessage,SystemMessage
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.graph import MessagesState
 # from states import State
+from AI_coding_assistence.states import State
 from AI_coding_assistence.states import Section
 from AI_coding_assistence.states import Sections
 from AI_coding_assistence.states import WorkerState
@@ -49,9 +50,12 @@ class State(TypedDict):
 class coding_assistance:
 
     def __init__(self):
-
+        with open("test_output.md", "w", encoding="utf-8") as file:
+            pass
+        self.State=State()
         self.MemorySaver = MemorySaver
         t=tools()
+        self.tool=tools()
         self.workflow = StateGraph(State)
 
         self.workflow.add_node("problem_statement_maker",t.problem_statement_maker)
@@ -99,22 +103,32 @@ class coding_assistance:
         thread_id=chat_request["thread_id"]
         thread={"configurable":{"thread_id":thread_id}}
         request={}
+        res="Coding Assistance:\n\n"
         for i in chat_request.keys():
             if(chat_request[i]!="None"):
                 request[i]=chat_request[i]
-
+        event_arr=[]
         if  len(request.keys())==2:
             initial_input=request["initial_input"]
+            
             for event in self.chain.stream({"user_prompt":initial_input},thread,stream_mode="values"):
-                print("")
+                event_arr.append(event)
+            # res+=self.tool.first_output(self.State)
+            res+=event_arr[-1]["problem_statement"]+event_arr[-1]["test_cases"]
 
         elif len(request.keys())==3:
 
             update=request["update"]
             for event in self.chain.stream(None if update.lower() == "yes" or update.lower() == "y" or update.lower() == "ok"  else {"user_prompt":update}, thread, stream_mode="values"):
-                print("")
+                event_arr.append(event)
+
+            res+=event_arr[-1]["code"]
 
         else:
             update=request["documentation"]
             for event in self.chain.stream(None if update.lower() == "yes" or update.lower() == "y" or update.lower() == "ok"  else {"stop":"stop"}, thread, stream_mode="values"):
-                print("")
+                event_arr.append(event)
+
+            res+=event_arr[-1]["output"]+event_arr[-1]["final_report"]
+
+        return res
