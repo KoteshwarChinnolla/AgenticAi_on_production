@@ -1,6 +1,5 @@
 from typing_extensions import TypedDict
 from langgraph.graph import StateGraph, START, END
-from IPython.display import Image, display
 from typing import Annotated, List
 import operator
 from pydantic import BaseModel, Field

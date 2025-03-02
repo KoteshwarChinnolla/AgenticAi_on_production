@@ -2,42 +2,79 @@
 
 ## check_for_language 
 
-cpp
+python
 ## problem_statement_maker 
 
-It looks like you might have abbreviated or haven't provided a complete prompt or code snippet for me to generate a problem statement. Could you please provide more details? For example, if you are referring to a code that deals with "koti," which is a term often used in Hindi meaning "crore" (10 million), you might need a problem statement related to handling large numbers, currency conversions, or numerical operations in specific contexts. Please provide more context or a specific code snippet so I can assist you better.
-## test_cases 
+Certainly! Here is a problem statement tailored for generating or checking palindromes:
 
-Sure, I can help with that. However, I need more information about the problem you want to generate test cases for. Since no specific problem was provided, I'll create a hypothetical problem for demonstration purposes. Let's say the problem is about a function that converts a number of crores (koti) to its equivalent in millions. Here's a problem statement for that:
+---
 
 **Problem Statement:**
-Write a function `convertCroresToMillions(crores)` that takes an integer `crores` representing the number of crores and returns the equivalent number in millions. Note that 1 crore is equal to 10 million.
 
-Now, here are the test cases for the above problem statement:
+A palindrome is a word, phrase, number, or other sequences of characters that reads the same backward as forward. For example, "madam" and "racecar" are palindromes. Your task is to write a program that checks whether a given string is a palindrome. The program should ignore spaces, punctuation, and capitalization while making this determination.
+
+**Input:**
+
+- A single line containing a string `S` (1 ≤ |S| ≤ 1000), where `|S|` denotes the length of the string. The string `S` may contain any printable ASCII characters.
+
+**Output:**
+
+- Output "Yes" if the given string `S` is a palindrome, ignoring spaces, punctuation, and capitalization. Otherwise, output "No".
+
+**Example:**
+
+- Input:
+```
+Madam, in Eden, I'm Adam
+```
+- Output:
+```
+Yes
+```
+
+- Input:
+```
+A Toyota
+```
+- Output:
+```
+No
+```
+
+**Note:**
+
+Ensure your solution efficiently handles the input constraints and edge cases, such as strings that are already properly formatted and those with special characters.
+
+--- 
+
+This problem statement provides a clear and concise description of what is expected from the user in terms of input and output, along with examples to clarify the requirements.
+## test_cases 
+
+Sure, here are five test cases designed to cover a range of scenarios, including edge cases and complex inputs, to ensure the robustness of the palindrome-checking program:
 
 1. **Test Case 1:**
-   - Input: `convertCroresToMillions(2)`
-   - Output: `20`
-   - Explanation: 2 crores is equivalent to 20 million (2 * 10).
+   - input: `A man, a plan, a canal, Panama`
+   - output: `Yes`
+   - explanation: This classic palindrome phrase is used to verify that the program can handle spaces, punctuation, and mixed case letters.
 
 2. **Test Case 2:**
-   - Input: `convertCroresToMillions(0)`
-   - Output: `0`
-   - Explanation: 0 crores is equivalent to 0 million.
+   - input: `Was it a car or a cat I saw?`
+   - output: `Yes`
+   - explanation: This test case checks the program's ability to ignore punctuation and spaces while determining if the sentence is a palindrome.
 
 3. **Test Case 3:**
-   - Input: `convertCroresToMillions(5)`
-   - Output: `50`
-   - Explanation: 5 crores is equivalent to 50 million (5 * 10).
+   - input: `Not a palindrome`
+   - output: `No`
+   - explanation: This test case ensures that the program correctly identifies a non-palindromic string and handles it appropriately, even when it contains spaces.
 
 4. **Test Case 4:**
-   - Input: `convertCroresToMillions(100)`
-   - Output: `1000`
-   - Explanation: 100 crores is equivalent to 1000 million (100 * 10).
+   - input: `A Santa at NASA`
+   - output: `Yes`
+   - explanation: This case tests the program's capability to handle strings with different capitalizations and spaces, ensuring the palindrome detection works as expected.
 
 5. **Test Case 5:**
-   - Input: `convertCroresToMillions(-10)`
-   - Output: `-100`
-   - Explanation: -10 crores is equivalent to -100 million (-10 * 10). This tests the function's behavior with negative inputs, which could be relevant depending on the context of the function.
+   - input: `!@#$%^&*()_+{}|:<>?[];\',./~`
+   - output: `Yes`
+   - explanation: This test is to confirm that the program can handle and correctly identify a palindrome even when the input consists solely of non-alphanumeric characters, ignoring punctuation as specified in the problem statement.
 
-These test cases should cover the basic and edge cases for the problem statement provided. Please let me know if you have another specific problem in mind or if these examples meet your requirements.
+These test cases should help ensure that the program can handle a variety of inputs, from classic palindrome phrases to strings with non-alphanumeric characters, while adhering to the problem's requirements.
