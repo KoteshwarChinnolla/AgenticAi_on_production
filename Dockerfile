@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY app app
 COPY calculater calculater
 COPY my_info my_info
+COPY AI_coding_assistence AI_coding_assistence
 COPY model_calling.py model_calling.py
 
 EXPOSE 5000
