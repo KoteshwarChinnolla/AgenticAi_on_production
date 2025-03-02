@@ -34,10 +34,13 @@
         </aside>
         <main class="chatbox">
             <div id="chat-window"></div>
+            <form onsubmit="sendMessage(event); return false;">
             <div class="chat-input">
                 <input type="text" id="user-input" placeholder="Type your message...">
                 <button onclick="sendMessage()">Send</button>
             </div>
+            </form>
+            </main>
         </main>
     </div>
     <script src="chatUI.js"></script>

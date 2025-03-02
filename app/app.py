@@ -13,11 +13,17 @@ from calculater.toolcallinglm import build_graph
 from pprint import pprint
 import markdown2
 from my_info.a_info_model import gen_info
+from AI_coding_assistence.coding_assistance import coding_assistance
 
-calculator_model=build_graph()
+
 md = markdown2.Markdown()
 app = FastAPI()
+
+
+coding_assistance_model=coding_assistance()
+calculator_model=build_graph()
 my_info_model=gen_info()
+
 
 app.add_middleware(
     CORSMiddleware,#0563bb90
@@ -26,16 +32,17 @@ app.add_middleware(
     allow_methods=["*"],  # Allow all HTTP methods, including OPTIONS
     allow_headers=["*"],  # Allow all headers
 )
-i=0
-
-
-
 
 class ChatRequest(BaseModel):
     message: str
     name: str
     thread_id: str
 
+class CodingAssistance(BaseModel):
+    thread_id: str = "456"
+    initial_input: str = "None"
+    update: str = "None" 
+    documentation: str = "None"
 
 @app.get("/")
 async def read_root(request: Request):
@@ -78,7 +85,25 @@ async def my_info(chat_request: ChatRequest):
         raise HTMLResponse(content=md.convert(str(e)))
 
 
+@app.post("/coding_assistance")
+async def coding_assistance(chat_request: CodingAssistance):
+    print(chat_request)
 
+    request = chat_request.dict()
+    print(request)
+
+    if "initial_input" not in request:
+        raise HTTPException(status_code=400, detail="Message cannot be empty.")
+    try:
+        coding_assistance_model.response(request)
+
+        with open("test_output.md", "r", encoding="utf-8") as file:
+            content = file.read()
+
+        return HTMLResponse(content=md.convert(content))
+
+    except Exception as e:
+        raise HTMLResponse(content=md.convert(str(e)))
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=5000) 
