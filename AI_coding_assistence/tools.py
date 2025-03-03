@@ -77,20 +77,31 @@ class tools:
         with open("test_output.md", "a", encoding="utf-8") as file:
             file.write("## generate code \n\n"+response.content+"\n")
         print(f"# generate code \n {response.content}")
-        return {"generated_code":response.content}
+        return {"generated_code":response.content,"code":response.content}
 
     def polish_code_fun(self,State :State):
+        format = '''
+        test case {number}:
+        input: {input_without_function}
+        output: {output}
 
-        sys_prompt=f"you are a code polisher, remove all unnecessary content from the given code like comment lines, and make it more readable and understandable. \n\n given_code : {State.get("generated_code",State['user_prompt'])} \n\n return just code without any explanation"
+        explanation: {Reason behan the failed testcase}
+
+        '''
+        sys_prompt=f"You are given with code and problem statement. generate test cases the given code might fail. Be careful, generate only if it fails or not work according to the problem statement otherwise just print no failed test cases \n\n problem_statement : {State['problem_statement']} \n\n given_code : {State.get("generated_code",State['user_prompt'])} \n\n Return output in this format {format} if there are any failed test cases otherwise respond with no \"failed test cases\""
         response=self.llm.invoke(sys_prompt)
         with open("test_output.md", "a", encoding="utf-8") as file:
             file.write("## polish_code \n\n"+response.content+"\n")
         print(f"# polish_code + {response.content}")
-        return {"code":response.content}
+        return {"failed_test_cases":response.content}
 
     def review_code_fun(self,State :State):
+        format = '''
+        Improvements in code for failed test cases : {Improvements}
+        Suggestions to make code according to problem statement : {Suggestions}
+        '''
 
-        sys_prompt=f"you are a code reviewer, your task is to review the code and check if it is according to the problem statement or not. if it is perfect just respond with the word \"perfect\" else respond with a suggestion that is required to improve. \n\n problem_statement : {State['problem_statement']} given_code : {State['code']} \n\n just respond with the word perfect or a long suggestion"
+        sys_prompt=f"your task is to review the code.you are given with the problem statement and the failed test cases. suggest improvements, if there are any fail test cases or if the code is not according to the problem statement otherwise respond with the word \"perfect\" \n\n problem_statement : {State['problem_statement']} \n\n given_code : {State['code']} \n\n failed test cases : {State.get('failed_test_cases','')}  /n/n. if there is no failed testcases and code is according to problem statement just respond with the word \"perfect\". your response must be either word \"perfect\" or suggestions in this format {format}"
         response=self.llm.invoke(sys_prompt)
         with open("test_output.md", "a", encoding="utf-8") as file:
             file.write("## review_code \n\n"+response.content+"\n")
@@ -99,16 +110,23 @@ class tools:
 
     def improve_code_fun(self,State :State):
 
-        sys_prompt=f"you are a coding assistant, your task is to improve the given code according to the suggestions and problem statement. response must be accurate. \n\n problem_statement : {State['problem_statement']} \n\n given_code : {State['code']} given_test_cases : {State["test_cases"]} suggestions : {State['suggestions']} \n\n failed test cases : {State.get('failed_test_cases','')}"
+        sys_prompt=f"you are a coding assistant, your task is to improve the given code according to the suggestions, problem statement and failed test cases. response must be accurate. \n\n problem_statement : {State['problem_statement']} \n\n  given_test_cases : {State["test_cases"]}  \n\n failed test cases : {State.get('failed_test_cases','')} \n\n suggestions : {State['suggestions']} \n\n code : {State['code']} "
         response=code_llm.invoke(sys_prompt)
         with open("test_output.md", "a", encoding="utf-8") as file:
             file.write("## Improve code \n\n"+response.content+"\n")
         print(f'improved code \n {response.content}')
-        return {"improved_code":response.content}
+        return {"improved_code":response.content, "failed_test_cases":""}
         
     def test_code_fun(self,State :State):
+        format = '''
+        test case {number}:
+        input: {input_without_function}
+        output: {output}
 
-        sys_prompt=f"you are a code tester, you are given with the testcases check if the code pass all the testcases if not respond with the fail test cases or respond with one word \"Pass\" . \n\n given_code : {State['code']} \n\n test cases : {State['test_cases']}  \n\n your response must be single word pass if all test cases pass or else respond with failed test cases"
+        explanation: {Reason}
+
+        '''
+        sys_prompt=f"you are a code tester, you are given with the testcases. check if the code pass all the testcases. if not respond with the fail test cases in this format {format} or respond with one word \"Pass\" . \n\n given_code : {State['code']} \n\n test cases : {State['test_cases']}  \n\n your response must be single word pass if all test cases pass or else respond with failed test cases"
         response=self.llm.invoke(sys_prompt)
         with open("test_output.md", "a", encoding="utf-8") as file:
             file.write("## test_code \n\n"+response.content+"\n")
@@ -218,27 +236,18 @@ class tools:
 
     def documentation(self,State:State):
 
-        if "stop" in State:
-            return {"stop":"stop"}
-        else:
+        if "stop" not in State:
             return {"stop":"continue"}
+        elif State["stop"]=="failed":
+            return {"failed_test_cases":State["failed_test_cases"],"stop":"failed"}
+        else:
+            return {"stop":"stop"}
 
     def documentation_condition(self,State:State):
 
         if State["stop"]=="stop":
             return "stop"
+        elif State["stop"]=="failed":
+            return "failed"
         else:
             return "continue"
-
-
-    def first_output(self,State:State):
-
-        return State["problem_statement"]+State["test_cases"]
-
-    def second_output(self,State:State):
-
-        return State["code"]
-
-    def third_output(self,State:State):
-
-        return State["final_report"]+State["output"]

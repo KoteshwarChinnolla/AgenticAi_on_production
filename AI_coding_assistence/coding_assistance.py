@@ -83,7 +83,7 @@ class coding_assistance:
         self.workflow.add_conditional_edges("review_code_fun",t.condition_at_review,{"perfect":"test_code_fun","prob_stat + suggestion +code":"improve_code_fun"})
         self.workflow.add_edge("improve_code_fun","polish_code_fun")
         self.workflow.add_conditional_edges("test_code_fun",t.condition_at_test,{"prob_stat + suggestion +code + failed_test_cases":"improve_code_fun","pass":"documentation"})
-        self.workflow.add_conditional_edges("documentation",t.documentation_condition,{"stop":END,"continue":"orchestrator"})
+        self.workflow.add_conditional_edges("documentation",t.documentation_condition,{"stop":END,"continue":"orchestrator","failed":"review_code_fun"})
         self.workflow.add_conditional_edges(
             "orchestrator",t.assign_workers,["llm_call"]
         )
@@ -103,7 +103,7 @@ class coding_assistance:
         thread_id=chat_request["thread_id"]
         thread={"configurable":{"thread_id":thread_id}}
         request={}
-        res="Coding Assistance:\n\n"
+        res="programming Assistance:\n\n"
         for i in chat_request.keys():
             if(chat_request[i]!="None"):
                 request[i]=chat_request[i]
@@ -121,14 +121,31 @@ class coding_assistance:
             update=request["update"]
             for event in self.chain.stream(None if update.lower() == "yes" or update.lower() == "y" or update.lower() == "ok"  else {"user_prompt":update}, thread, stream_mode="values"):
                 event_arr.append(event)
+            if(update.lower() == "yes" or update.lower() == "y" or update.lower() == "ok"):
 
-            res+=event_arr[-1]["code"]
+                res+=event_arr[-1]["code"]
+            else:
+                res+=event_arr[-1]["problem_statement"]+event_arr[-1]["test_cases"]
 
         else:
-            update=request["documentation"]
-            for event in self.chain.stream(None if update.lower() == "yes" or update.lower() == "y" or update.lower() == "ok"  else {"stop":"stop"}, thread, stream_mode="values"):
-                event_arr.append(event)
+            update = request["documentation"]
+            print(update.lower() in ["yes", "y", "ok"])
+            stream_input = None
+            if update.lower() in ["yes", "y", "ok"]:
+                print("ok")
+                stream_input = {"stop":"continue"}
+                for event in self.chain.stream(None, thread, stream_mode="values"):
+                    event_arr.append(event)
 
-            res+=event_arr[-1]["output"]+event_arr[-1]["final_report"]
 
+                res+=event_arr[-1]["output"]+event_arr[-1]["final_report"]
+
+            elif update.lower() in ["stop", "end", "no"]:
+                stream_input = {"stop": "stop"}
+                return res
+            else:
+                
+                stream_input = {"user_prompt":initial_input,"failed_test_cases": update}
+                for event in self.chain.stream(stream_input, thread, stream_mode="values"):
+                    event_arr.append(event)
         return res

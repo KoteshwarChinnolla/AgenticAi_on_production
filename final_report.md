@@ -1,40 +1,50 @@
 ## Final Code 
 
-```python
-from typing import List
+Based on the report and the given code, here's the organized code with docstrings and comments for each section to match the report structure:
 
-def binary_search(sorted_array: List[int], target: int) -> int:
+```python
+# Introduction
+# This section provides a brief overview of the problem of computing the factorial of a non-negative integer and introduces the solution through a Python function named `factorial`. The function is designed to handle non-negative integers and raises a ValueError for negative inputs. An example of how to use the function is also provided, demonstrating the computation of the factorial of 5.
+
+## Function Definition
+
+def factorial(n):
     """
-    Perform a binary search on a sorted array to find the index of a target value.
+    Computes the factorial of a given non-negative integer n.
     
     Parameters:
-        sorted_array (List[int]): A list of integers sorted in non-decreasing order.
-        target (int): The value to search for in the sorted_array.
-        
+    n (int): A non-negative integer whose factorial is to be computed.
+    
     Returns:
-        int: The index of the target in the array if found, otherwise -1.
+    int: The factorial of n.
     """
     
-    # Initialize the left and right pointers to cover the entire array
-    left, right = 0, len(sorted_array) - 1
+    ## Input Validation
+    # The code snippet validates the input argument `n` to ensure it is a non-negative integer.
+    # If `n` is less than zero, indicating a negative value, a `ValueError` is raised.
+    # This validation step is crucial for preventing errors in subsequent computations.
+    if n < 0:
+        raise ValueError("Input must be a non-negative integer")
     
-    # Continue the loop as long as the left pointer is less than or equal to the right pointer
-    while left <= right:
-        # Calculate the middle index
-        mid = (left + right) // 2
-        
-        # If the target is found at the middle index, return the index
-        if sorted_array[mid] == target:
-            return mid
-        # If the target is larger than the value at the middle index, adjust the left pointer
-        elif sorted_array[mid] < target:
-            left = mid + 1
-        # If the target is smaller, adjust the right pointer
-        else:
-            right = mid - 1
+    ## Factorial Calculation
+    # This section details the iterative approach to calculate the factorial of a number `n`.
+    # The factorial of a number `n`, denoted as `n!`, is the product of all positive integers less than or equal to `n`.
+    # The code initializes `result` to `1`, serving as the starting point for multiplication.
+    # It then enters a for loop, iterating from `2` to `n + 1`.
+    # In each iteration, the current value of `result` is multiplied by the loop variable `i`, effectively accumulating the product.
+    result = 1
+    for i in range(2, n + 1):
+        result *= i
     
-    # If the loop ends and the target was not found, return -1
-    return -1
+    ## Return Statement
+    # The `return result` statement signifies the end of the function execution and sends back the value of the variable `result` to the caller.
+    return result
+
+# Example Usage
+# Example of how to use the function in a script.
+if __name__ == "__main__":
+    n = 5
+    print(f"The factorial of {n} is {factorial(n)}")
 ```
 
-This function, `binary_search`, efficiently locates the index of a target value within a sorted array. It accepts two parameters: `sorted_array`, which is the array to be searched, and `target`, which is the value to be located within the array. The function returns the index of the target if it is present in the array, or -1 if the target is not found. The binary search algorithm works by repeatedly dividing the search interval in half, comparing the target with the middle element of the interval, and narrowing down the search space based on the comparison until the target is found or the search space is exhausted. This method is highly efficient, with a time complexity of O(log n), making it significantly faster than linear search for large datasets.
+This organized code includes detailed comments and docstrings to match the report's structure, making each section clear and self-explanatory.
