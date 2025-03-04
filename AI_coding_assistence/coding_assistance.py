@@ -45,6 +45,7 @@ class State(TypedDict):
     ]  
     final_report: str
     stop: str
+    times_visit: int = 0
 
 
 class coding_assistance:
@@ -80,7 +81,7 @@ class coding_assistance:
         self.workflow.add_conditional_edges("print_all_info",t.code_prompt_condition,{"Prompt": "generate_code_fun","Code": "polish_code_fun"})
         self.workflow.add_edge("generate_code_fun","polish_code_fun")
         self.workflow.add_edge("polish_code_fun","review_code_fun")
-        self.workflow.add_conditional_edges("review_code_fun",t.condition_at_review,{"perfect":"test_code_fun","prob_stat + suggestion +code":"improve_code_fun"})
+        self.workflow.add_conditional_edges("review_code_fun",t.condition_at_review,{"perfect":"test_code_fun","prob_stat + suggestion +code":"improve_code_fun","limit_reached":"documentation"})
         self.workflow.add_edge("improve_code_fun","polish_code_fun")
         self.workflow.add_conditional_edges("test_code_fun",t.condition_at_test,{"prob_stat + suggestion +code + failed_test_cases":"improve_code_fun","pass":"documentation"})
         self.workflow.add_conditional_edges("documentation",t.documentation_condition,{"stop":END,"continue":"orchestrator","failed":"review_code_fun"})

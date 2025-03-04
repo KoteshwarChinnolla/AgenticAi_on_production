@@ -1,50 +1,50 @@
 ## Final Code 
 
-Based on the report and the given code, here's the organized code with docstrings and comments for each section to match the report structure:
+Below is the organized code with docstrings and comments for clarity:
 
 ```python
-# Introduction
-# This section provides a brief overview of the problem of computing the factorial of a non-negative integer and introduces the solution through a Python function named `factorial`. The function is designed to handle non-negative integers and raises a ValueError for negative inputs. An example of how to use the function is also provided, demonstrating the computation of the factorial of 5.
-
-## Function Definition
-
-def factorial(n):
+def is_prime(n):
     """
-    Computes the factorial of a given non-negative integer n.
+    Determines if a given number n is a prime number.
     
     Parameters:
-    n (int): A non-negative integer whose factorial is to be computed.
+    n (int): An integer to be checked if it's a prime number.
     
     Returns:
-    int: The factorial of n.
+    bool: True if n is a prime number, False otherwise.
     """
     
-    ## Input Validation
-    # The code snippet validates the input argument `n` to ensure it is a non-negative integer.
-    # If `n` is less than zero, indicating a negative value, a `ValueError` is raised.
-    # This validation step is crucial for preventing errors in subsequent computations.
-    if n < 0:
-        raise ValueError("Input must be a non-negative integer")
+    # Check if n is less than 2, which is not a prime number
+    if n < 2:
+        return False
     
-    ## Factorial Calculation
-    # This section details the iterative approach to calculate the factorial of a number `n`.
-    # The factorial of a number `n`, denoted as `n!`, is the product of all positive integers less than or equal to `n`.
-    # The code initializes `result` to `1`, serving as the starting point for multiplication.
-    # It then enters a for loop, iterating from `2` to `n + 1`.
-    # In each iteration, the current value of `result` is multiplied by the loop variable `i`, effectively accumulating the product.
-    result = 1
-    for i in range(2, n + 1):
-        result *= i
+    # Check if n is 2, which is the only even prime number
+    if n == 2:
+        return True
     
-    ## Return Statement
-    # The `return result` statement signifies the end of the function execution and sends back the value of the variable `result` to the caller.
-    return result
+    # Exclude even numbers greater than 2 from being prime
+    if n % 2 == 0:
+        return False
+    
+    # Check divisibility up to the square root of n
+    # Start from 3 and check only odd numbers to improve efficiency
+    for i in range(3, int(n**0.5) + 1, 2):
+        if n % i == 0:
+            return False
+    
+    # If no divisors were found, n is a prime number
+    return True
 
-# Example Usage
-# Example of how to use the function in a script.
-if __name__ == "__main__":
-    n = 5
-    print(f"The factorial of {n} is {factorial(n)}")
+# Example usage
+print(is_prime(17))  # Output: True
+print(is_prime(20))  # Output: False
 ```
 
-This organized code includes detailed comments and docstrings to match the report's structure, making each section clear and self-explanatory.
+### Explanation and Comments:
+- **Function Definition**: The `is_prime` function checks if a given number `n` is a prime number. It takes an integer `n` as input and returns a boolean value.
+- **Initial Checks**: Numbers less than 2 are not prime, so the function returns `False` for these cases. The number 2 is a prime number but the only even one, so it returns `True` if `n` equals 2.
+- **Even Number Check**: If `n` is even and greater than 2, it can't be a prime number, so the function returns `False`.
+- **Odd Divisors Check**: The function checks for divisibility by any odd number up to the square root of `n` (starting from 3 and checking every other number for odd divisors). If any number divides `n` evenly, `n` is not a prime number, and the function returns `False`.
+- **Prime Confirmation**: If the function has not returned `False` by this point, it concludes that `n` is a prime number and returns `True`.
+
+By including the docstrings and comments, the code becomes more readable and understandable for other developers or users who might use or modify the code.
