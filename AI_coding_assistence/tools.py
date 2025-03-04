@@ -93,6 +93,8 @@ class tools:
         with open("test_output.md", "a", encoding="utf-8") as file:
             file.write("## polish_code \n\n"+response.content+"\n")
         print(f"# polish_code + {response.content}")
+        if( "code" not in State):
+            return {"failed_test_cases":response.content,"code":State.get("generated_code",State['user_prompt']),"times_visit":0}
         return {"failed_test_cases":response.content}
 
     def review_code_fun(self,State :State):
@@ -101,7 +103,7 @@ class tools:
         Suggestions to make code according to problem statement : {Suggestions}
         '''
 
-        sys_prompt=f"your task is to review the code.you are given with the problem statement and the failed test cases. suggest improvements, if there are any fail test cases or if the code is not according to the problem statement otherwise respond with the word \"perfect\" \n\n problem_statement : {State['problem_statement']} \n\n given_code : {State['code']} \n\n failed test cases : {State.get('failed_test_cases','')}  /n/n. if there is no failed testcases and code is according to problem statement just respond with the word \"perfect\". your response must be either word \"perfect\" or suggestions in this format {format}"
+        sys_prompt=f"your task is to review the code.you are given with the problem statement and the failed test cases. suggest improvements, if there are any fail test cases or if the code is not according to the problem statement otherwise respond with the word \"perfect\" \n\n problem_statement : {State['problem_statement']} \n\n given_code : {State.get("generated_code",State['user_prompt'])} \n\n failed test cases : {State.get('failed_test_cases','')}  /n/n. if there is no failed testcases and code is according to problem statement just respond with the word \"perfect\". your response must be either word \"perfect\" or suggestions in this format {format}"
         response=self.llm.invoke(sys_prompt)
         with open("test_output.md", "a", encoding="utf-8") as file:
             file.write("## review_code \n\n"+response.content+"\n")
