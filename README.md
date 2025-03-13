@@ -163,6 +163,8 @@ docker container run \
 
  Now, navigate to Docker Desktop. You will be able to see a container is in running state. Click on `5000:5000`. If it is in underlined, then the container is running. If you click on that, we navigate to a local host ```http://localhost:5000``` Just add `/docs` at the end to see the swagger UI. we are now at ```http://localhost:5000/docs``` to test our API's.
 
+## **CLOUD DEPLOYMENTS** 
+
 So now that we have the working container, every time we run the container, we can execute our functionalities. But understand that if you want to make others access the same link, you can't do that. Why? So it is because the container is running on the local host( that means it only running on the local computer). 
 
 But you don't build the container only for you. You want to make it available for everyone so that they can also use your application. To make this, we need to understand the concept of the cloud. Using cloud deployment, we can actually make it available on the internet ( so that everyone can access it ). 
