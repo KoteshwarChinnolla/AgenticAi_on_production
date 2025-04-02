@@ -172,9 +172,26 @@ But you don't build the container only for you. You want to make it available fo
 So How?
 So we are using EC2.
 
-EC2 is famously known for building, Deploying and Managing applications. AWS provide you with a dedicated virtual machine to run our Application. EC2 provides all the resources that are used by the virtual machine for running our application. as local machene is a computer owned by us. But the virtual machine is a computer that is owned by someone ( Cloud provider) but runs our application. as EC2 is a platform where we can choose the kind of resource we need to run Application. The cloud provider creates a server using those resources so that our container runs on that and provides you with a link that can be accessible by everyone on the internet. so whatever the local host link we got by running our continer on local devise. In the cloud, the concept is same but we just run it continuously. As it is on the internet, we can control who can access it using the public IP address.
+EC2 is famously known for building, Deploying and Managing applications. AWS provide you with a dedicated virtual machine to run our Application. EC2 provides all the resources that are used by the virtual machine for running our application. as local machene is a computer owned by us. But the virtual machine is a computer that is owned by someone ( Cloud provider) but runs our application. as EC2 is a platform where we can choose the kind of resource we need to run Application. The cloud provider creates a server using those resources so that our container runs on that and provides you with a link that can be accessed by everyone on the internet. so whatever the local host link we got by running our continer on local devise. In the cloud, the concept is same but we just run it continuously. As it is on the internet, we can control who can access it using the public IP address.
 
 our task is to extract that public IP address so that everyone on the inter net can able to access it.
 
 > Steps to be followed to do that.
 > 1. Pushing Docker Image onto Docker HUB ( or any container registry)
+> 2. Connecting to virtual machine. we have various ways. some of them mentioned [here](https://medium.com/@dipan.saha/exploring-various-ways-to-connect-to-your-aws-ec2-instance-a-comprehensive-guide-a0636e1d5cfd)
+> 3. Install Docker onto VM using the [following the instructions ](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-docker.html)
+> 5. Log in to the Docker Hub in the VM `docker login --username=your_username --password=your_password`
+> 6. Pull the image to VM 'docker pull <your_username>/<image_name> .
+> 7. Run the container
+ ```python
+docker container run \
+--name "test_container_1" -d -p 5000:5000 \
+-e GROQ_API_KEY="<API_key>" -e LANG_CHAIN_API_KEY="<API_KEY>" agenticai_model
+```
+> 8. testing
+> > `docker ps` to check if the container is running
+> > `docker logs -f <container_name>` logos regarding the container
+> 9. Get the public IP address to link it to the API gateway.
+We can't use a pubic IP directly  in our webpages/applications. Using a public IP means exposing our VM.
+For safe and secure access, we mainly prefer API Gateway. using API gateway as the endpoint is secure and 
+> 
